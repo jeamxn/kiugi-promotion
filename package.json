@@ -4,7 +4,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
-    "format": "biome format --write ./src"
+    "lint": "biome lint --write",
+    "format": "biome format --write",
+    "check": "biome check --write",
+    "reporter": "biome check --reporter=summary"
   },
   "dependencies": {
     "@elysiajs/swagger": "^1.2.0",
