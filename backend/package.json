@@ -1,0 +1,20 @@
+{
+  "name": "kiugi-promotion-backend",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts"
+  },
+  "dependencies": {
+    "@elysiajs/jwt": "^1.2.0",
+    "@elysiajs/swagger": "^1.2.0",
+    "dayjs": "^1.11.13",
+    "elysia": "latest",
+    "jose": "^5.9.6",
+    "mongoose": "^8.9.5"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "module": "src/index.js"
+}

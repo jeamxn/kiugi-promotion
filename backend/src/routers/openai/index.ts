@@ -1,4 +1,4 @@
-import getUserInfo from "@/guards/getUserInfo";
+import getUserInfo from "@back/guards/getUserInfo";
 import Elysia, { t } from "elysia";
 
 const OpenaiRouter = new Elysia({

@@ -1,5 +1,5 @@
-import User from "@/models/user";
-import error from "@/utils/error";
+import User from "@back/models/user";
+import error from "@back/utils/error";
 import Bun from "bun";
 import Elysia, { t } from "elysia";
 
