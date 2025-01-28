@@ -12,16 +12,22 @@ const err = {
 export type ERROR = typeof err;
 export type ERROR_KEY = keyof ERROR;
 
-const error = Object.entries(err).reduce((acc: {
-  [key in ERROR_KEY]: ElysiaCustomStatusResponse<any, any>;
-}, [key, [num, message]]) => {
-  acc[key as ERROR_KEY] = e(num as number, {
-    code: key,
-    message,
-  });
-  return acc;
-}, {} as {
-  [key in ERROR_KEY]: ElysiaCustomStatusResponse<any, any>;
-});
+const error = Object.entries(err).reduce(
+  (
+    acc: {
+      [key in ERROR_KEY]: ElysiaCustomStatusResponse<any, any>;
+    },
+    [key, [num, message]],
+  ) => {
+    acc[key as ERROR_KEY] = e(num as number, {
+      code: key,
+      message,
+    });
+    return acc;
+  },
+  {} as {
+    [key in ERROR_KEY]: ElysiaCustomStatusResponse<any, any>;
+  },
+);
 
 export default error;
