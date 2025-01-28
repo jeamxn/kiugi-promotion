@@ -1,5 +1,5 @@
 import User from "@/models/user";
-import ERROR from "@/utils/error";
+import error from "@/utils/error";
 import Bun from "bun";
 import Elysia, { t } from "elysia";
 
@@ -33,12 +33,10 @@ AuthRouter.post(
   "login",
   async ({ body, user }) => {
     const find = await user.findByUsername(body.username);
-    if (!find) throw new Error(ERROR.USER_NOT_FOUND);
+    if (!find) throw error.USER_NOT_FOUND;
 
     const isValid = await Bun.password.verify(body.password, find.password);
-    if (!isValid) throw new Error(ERROR.INVALID_PASSWORD);
-
-    // const token = await Bun.
+    if (!isValid) throw error.INVALID_PASSWORD;
 
     return {
       token: find?._id.toString() ?? "",

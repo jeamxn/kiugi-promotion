@@ -1,4 +1,4 @@
-import ERROR from "@/utils/error";
+import error from "@/utils/error";
 import Bun from "bun";
 import Elysia, { t } from "elysia";
 import mongoose from "mongoose";
@@ -12,10 +12,10 @@ const UserDB = mongoose.model("User", userSchema);
 const elysia = new Elysia().model({
   user: t.Object({
     username: t.String({
-      error: ERROR.INVALID_TYPE_USERNAME,
+      error: error.INVALID_TYPE_USERNAME,
     }),
     password: t.String({
-      error: ERROR.INVALID_TYPE_PASSWORD,
+      error: error.INVALID_TYPE_PASSWORD,
     }),
   }),
 });
@@ -32,7 +32,7 @@ const findByUsername = async (username: string) => {
 
 const create = async ({ username, password }: { username: string; password: string }) => {
   if (await findByUsername(username)) {
-    throw new Error(ERROR.USER_ALREADY_EXISTS);
+    throw error.USER_ALREADY_EXISTS;
   }
   const user = new UserDB({
     username: username,
