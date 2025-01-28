@@ -1,23 +1,23 @@
+import getUserInfo from "@/guards/getUserInfo";
 import Elysia, { t } from "elysia";
 
 const OpenaiRouter = new Elysia({
   name: "Open AI Router",
   prefix: "openai",
-});
+}).use(getUserInfo);
 
 OpenaiRouter.post(
   "chat",
-  ({ body }) => {
+  ({ body, userInfo }) => {
     return {
       token: body.text,
+      userInfo,
     };
   },
   {
+    isSignIn: true,
     body: t.Object({
       text: t.String(),
-    }),
-    response: t.Object({
-      token: t.String(),
     }),
   },
 );

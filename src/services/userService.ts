@@ -1,3 +1,5 @@
+import User from "@/models/user";
+import error from "@/utils/error";
 import { Elysia } from "elysia";
 
 const userService = new Elysia({ name: "user/service" })
@@ -6,16 +8,37 @@ const userService = new Elysia({ name: "user/service" })
     session: {} as Record<number, string>,
   })
   .model({})
+  .decorate("user", User)
   .macro({
     isSignIn: (enabled: boolean) => {
       if (!enabled) return;
-
       return {
-        beforeHandle({ error, cookie: { token } }) {
-          if (!token.value) {
-            return error(401, {
-              success: false,
-              message: "Unauthorized",
+        beforeHandle: async ({ cookie, user }) => {
+          const access_token = cookie.access_token.value;
+          if (!access_token) {
+            throw error.UNAUTHORIZED;
+          }
+          const verify = await user.verifyToken(access_token);
+          if (!verify) {
+            const refresh_token = cookie.refresh_token.value;
+            if (!refresh_token) throw error.UNAUTHORIZED;
+            const verifyR = await user.verifyToken(refresh_token);
+            if (!verifyR) throw error.UNAUTHORIZED;
+            const find = await user.findById(verifyR.id);
+            if (!find) throw error.UNAUTHORIZED;
+            const refresh = await user.generateToken(find, "refresh");
+            const access = await user.generateToken(find, "access");
+            cookie.refresh_token.set({
+              value: refresh,
+              httpOnly: true,
+              maxAge: 60 * 60 * 24 * 7,
+              path: "/",
+            });
+            cookie.access_token.set({
+              value: access,
+              httpOnly: true,
+              maxAge: 60 * 15,
+              path: "/",
             });
           }
         },

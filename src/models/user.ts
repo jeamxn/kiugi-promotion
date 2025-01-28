@@ -1,13 +1,20 @@
 import error from "@/utils/error";
 import Bun from "bun";
 import Elysia, { t } from "elysia";
-import mongoose from "mongoose";
+import { JWTPayload, JWTVerifyResult, SignJWT, jwtVerify } from "jose";
+import mongoose, { Document } from "mongoose";
+
+interface DUser {
+  username: string;
+  password: string;
+}
+type IUser = Document<DUser> & DUser;
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
 });
-const UserDB = mongoose.model("User", userSchema);
+const UserDB = mongoose.model<IUser>("User", userSchema);
 
 const elysia = new Elysia().model({
   user: t.Object({
@@ -42,11 +49,43 @@ const create = async ({ username, password }: { username: string; password: stri
   return user;
 };
 
+interface TokenPayload extends JWTPayload {
+  id: string;
+}
+
+const generateToken = async (user: IUser, type: "access" | "refresh") => {
+  const { username, _id } = user;
+  const payload: TokenPayload = {
+    id: _id.toString(),
+    username,
+  };
+  const secret = new TextEncoder().encode(Bun.env.JWT_SECRET ?? "");
+  const token = await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setIssuer("kiugi")
+    .setExpirationTime(type === "access" ? "15m" : "7d")
+    .sign(secret);
+  return token;
+};
+
+const verifyToken = async (token: string): Promise<TokenPayload> => {
+  try {
+    const secret = new TextEncoder().encode(Bun.env.JWT_SECRET ?? "");
+    const verify = await jwtVerify<TokenPayload>(token, secret);
+    return verify.payload;
+  } catch {
+    throw error.INVALID_TOKEN;
+  }
+};
+
 const User = {
   findById,
   findByUsername,
   create,
   elysia,
+  generateToken,
+  verifyToken,
 };
 
 export default User;
