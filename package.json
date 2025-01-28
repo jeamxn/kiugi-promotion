@@ -1,25 +1,28 @@
 {
-  "name": "kiugi-promotion-backend",
-  "version": "1.0.50",
+  "name": "kiugi-promotion",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "concurrently": "^9.1.2",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts",
+    "front": "bun --cwd frontend",
+    "back": "bun --cwd backend",
+    "dev": "concurrently \"bun front dev\" \"bun back dev\"",
+    "start": "concurrently \"bun front start\" \"bun back start\"",
     "lint": "biome lint --write",
     "format": "biome format --write",
     "check": "biome check --write",
-    "reporter": "biome check --reporter=summary"
-  },
-  "dependencies": {
-    "@elysiajs/jwt": "^1.2.0",
-    "@elysiajs/swagger": "^1.2.0",
-    "dayjs": "^1.11.13",
-    "elysia": "latest",
-    "jose": "^5.9.6",
-    "mongoose": "^8.9.5"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "bun-types": "latest"
-  },
-  "module": "src/index.js"
+    "reporter": "biome check --reporter=summary",
+    "build": "bun front build"
+  }
 }

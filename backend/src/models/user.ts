@@ -1,8 +1,8 @@
-import error from "@/utils/error";
+import error from "@back/utils/error";
 import Bun from "bun";
 import Elysia, { t } from "elysia";
-import { JWTPayload, JWTVerifyResult, SignJWT, jwtVerify } from "jose";
-import mongoose, { Document } from "mongoose";
+import { type JWTPayload, SignJWT, jwtVerify } from "jose";
+import mongoose, { type Document } from "mongoose";
 
 interface DUser {
   username: string;

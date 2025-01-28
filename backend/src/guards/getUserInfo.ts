@@ -1,4 +1,4 @@
-import error from "@/utils/error";
+import error from "@back/utils/error";
 import Elysia from "elysia";
 import userService from "../services/userService";
 
@@ -15,8 +15,7 @@ const getUserInfo = new Elysia()
     const verify = await user.verifyToken(access_token);
     if (!verify) throw error.UNAUTHORIZED;
     const userSearch = await user.findById(verify.id);
-    const userInfo = { ...userSearch?.toObject() };
-    delete userInfo.password;
+    const { password, ...userInfo } = { ...userSearch?.toObject() };
     return {
       userInfo: userInfo,
     };
