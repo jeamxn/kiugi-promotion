@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@elysiajs/swagger": "^1.2.0",
-    "elysia": "latest"
+    "elysia": "latest",
+    "mongoose": "^8.9.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

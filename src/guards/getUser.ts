@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import userService from "../service/userService";
+import userService from "../services/userService";
 
 export const getUserId = new Elysia()
   .use(userService)

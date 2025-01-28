@@ -1,4 +1,4 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 
 const userService = new Elysia({ name: "user/service" })
   .state({
@@ -7,7 +7,7 @@ const userService = new Elysia({ name: "user/service" })
   })
   .model({})
   .macro({
-    isSignIn(enabled: boolean) {
+    isSignIn: (enabled: boolean) => {
       if (!enabled) return;
 
       return {
