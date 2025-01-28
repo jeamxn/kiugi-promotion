@@ -15,10 +15,7 @@ const userService = new Elysia({ name: "user/service" })
       return {
         beforeHandle: async ({ cookie, user }) => {
           const access_token = cookie.access_token.value;
-          if (!access_token) {
-            throw error.UNAUTHORIZED;
-          }
-          const verify = await user.verifyToken(access_token);
+          const verify = await user.verifyToken(access_token ?? "");
           if (!verify) {
             const refresh_token = cookie.refresh_token.value;
             if (!refresh_token) throw error.UNAUTHORIZED;

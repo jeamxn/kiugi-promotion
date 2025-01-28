@@ -69,13 +69,13 @@ const generateToken = async (user: IUser, type: "access" | "refresh") => {
   return token;
 };
 
-const verifyToken = async (token: string): Promise<TokenPayload> => {
+const verifyToken = async (token: string): Promise<TokenPayload | null> => {
   try {
     const secret = new TextEncoder().encode(Bun.env.JWT_SECRET ?? "");
     const verify = await jwtVerify<TokenPayload>(token, secret);
     return verify.payload;
   } catch {
-    throw error.INVALID_TOKEN;
+    return null;
   }
 };
 
