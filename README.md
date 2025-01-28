@@ -1,15 +1,23 @@
 # kiugi-promotion
 
 ```bash
-bun install
+bun <install/dev/build>
 ```
 
 ```bash
-bun dev
-```
-
-```bash
+bun add <package>
 bun add <package> --cwd <backend/frontend>
 ```
 
-This project was created using `bun init` in bun v1.2.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+```bash
+docker compose <up/down>
+```
+
+```bash
+docker exec -t kiugi-promotion bun <add/remove> <package-name>
+docker exec -t kiugi-promotion bun <add/remove> <package-name> --cwd <backend/frontend>
+```
+
+<!-- ```bash
+docker compose -f docker-compose.prd.yml up
+``` -->

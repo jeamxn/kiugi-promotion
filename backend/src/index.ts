@@ -19,7 +19,9 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 const app = new Elysia();
 
-app.use(swagger());
+if (Bun.env.NODE_ENV === "development") {
+  app.use(swagger());
+}
 app.use(IndexRouter);
 app.onError(({ error, code }) => {
   if (code === "NOT_FOUND") return;

@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  kiugi-promotion-db:
+    image: mongodb/mongodb-community-server:5.0-ubuntu2004
+    container_name: kiugi-promotion-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: root
+      MONGODB_INITDB_ROOT_PASSWORD: example
+    
+  kiugi-promotion:
+    image: oven/bun:1.2.0
+    container_name: kiugi-promotion
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+      - "8000:8000"
+    command: ["sh", "-c", "bun install && bun run dev"]
+    environment:
+      NODE_ENV: development
+      JWT_SECRET: example
+      MONGODB_URI: mongodb://root:example@kiugi-promotion-db:27017/kiugi-promotion?authSource=admin
+    env_file:
+      - .env
