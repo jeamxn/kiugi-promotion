@@ -1,4 +1,4 @@
-@import url('https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css');
+@import url("https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +13,8 @@
   transition: var(--transition-default);
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -23,9 +24,9 @@ html, body {
 
 @keyframes rotation {
   0% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }

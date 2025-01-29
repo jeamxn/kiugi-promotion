@@ -1,6 +1,4 @@
-import Elysia, { StatusMap, t } from "elysia";
-import { ElysiaCookie } from "elysia/dist/cookies";
-import { HTTPHeaders } from "elysia/dist/types";
+import { t } from "elysia";
 
 const ERROR_MESSAGE = {
   USER_ALREADY_EXISTS: [409, "이미 존재하는 사용자입니다."],
