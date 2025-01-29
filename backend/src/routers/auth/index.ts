@@ -1,5 +1,5 @@
 import User from "@back/models/user";
-import error from "@back/utils/error";
+import exit, { errorElysia } from "@back/utils/error";
 import Bun from "bun";
 import Elysia, { t } from "elysia";
 
@@ -12,7 +12,10 @@ const AuthRouter = new Elysia({
 
 AuthRouter.post(
   "signin",
-  async ({ body, user }) => {
+  async ({ body, user, error }) => {
+    if (await user.findByUsername(body.username)) {
+      return exit(error, "USER_ALREADY_EXISTS");
+    }
     const created = await user.create({
       username: body.username,
       password: body.password,
@@ -23,19 +26,22 @@ AuthRouter.post(
   },
   {
     body: "user",
-    response: t.Object({
-      token: t.String(),
-    }),
+    response: {
+      200: t.Object({
+        token: t.String(),
+      }),
+      ...errorElysia(["USER_ALREADY_EXISTS"]),
+    },
   },
 );
 
 AuthRouter.post(
   "login",
-  async ({ body, user, cookie }) => {
+  async ({ body, user, cookie, error }) => {
     const find = await user.findByUsername(body.username);
-    if (!find) throw error.USER_NOT_FOUND;
+    if (!find) return exit(error, "USER_NOT_FOUND");
     const isValid = await Bun.password.verify(body.password, find.password);
-    if (!isValid) throw error.INVALID_PASSWORD;
+    if (!isValid) return exit(error, "INVALID_PASSWORD");
 
     const refresh = await user.generateToken(find, "refresh");
     const access = await user.generateToken(find, "access");
@@ -60,22 +66,25 @@ AuthRouter.post(
   },
   {
     body: "user",
-    response: t.Object({
-      success: t.Boolean(),
-    }),
+    response: {
+      200: t.Object({
+        success: t.Boolean(),
+      }),
+      ...errorElysia(["USER_NOT_FOUND", "INVALID_PASSWORD"]),
+    },
   },
 );
 
 AuthRouter.post(
   "refresh",
-  async ({ cookie, user }) => {
+  async ({ cookie, user, error }) => {
     const refresh_token = cookie.refresh_token.value;
-    if (!refresh_token) throw error.NO_REFRESH_TOKEN;
+    if (!refresh_token) return exit(error, "NO_REFRESH_TOKEN");
     const verify = await user.verifyToken(refresh_token);
-    if (!verify) throw error.UNAUTHORIZED;
+    if (!verify) return exit(error, "UNAUTHORIZED");
 
     const find = await user.findById(verify.id);
-    if (!find) throw error.UNAUTHORIZED;
+    if (!find) return exit(error, "UNAUTHORIZED");
 
     const refresh = await user.generateToken(find, "refresh");
     const access = await user.generateToken(find, "access");
@@ -99,9 +108,12 @@ AuthRouter.post(
     };
   },
   {
-    response: t.Object({
-      success: t.Boolean(),
-    }),
+    response: {
+      200: t.Object({
+        success: t.Boolean(),
+      }),
+      ...errorElysia(["NO_REFRESH_TOKEN", "UNAUTHORIZED"]),
+    },
   },
 );
 

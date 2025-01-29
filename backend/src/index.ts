@@ -1,3 +1,4 @@
+import cors from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import Bun from "bun";
 import dayjs from "dayjs";
@@ -19,13 +20,15 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 const app = new Elysia();
 
-if (Bun.env.NODE_ENV === "development") {
-  app.use(swagger());
-}
+app.use(swagger());
+app.use(
+  cors({
+    origin: "*",
+  }),
+);
 app.use(IndexRouter);
 app.onError(({ error, code }) => {
   if (code === "NOT_FOUND") return;
-
   console.error(error);
 });
 

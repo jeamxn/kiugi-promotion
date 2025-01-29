@@ -1,5 +1,5 @@
 import User from "@back/models/user";
-import error from "@back/utils/error";
+import exit from "@back/utils/error";
 import { Elysia } from "elysia";
 
 const userService = new Elysia({ name: "user/service" })
@@ -13,16 +13,16 @@ const userService = new Elysia({ name: "user/service" })
     isSignIn: (enabled: boolean) => {
       if (!enabled) return;
       return {
-        beforeHandle: async ({ cookie, user }) => {
+        beforeHandle: async ({ cookie, user, error }) => {
           const access_token = cookie.access_token.value;
           const verify = await user.verifyToken(access_token ?? "");
           if (!verify) {
             const refresh_token = cookie.refresh_token.value;
-            if (!refresh_token) throw error.UNAUTHORIZED;
+            if (!refresh_token) return exit(error, "UNAUTHORIZED");
             const verifyR = await user.verifyToken(refresh_token);
-            if (!verifyR) throw error.UNAUTHORIZED;
+            if (!verifyR) return exit(error, "UNAUTHORIZED");
             const find = await user.findById(verifyR.id);
-            if (!find) throw error.UNAUTHORIZED;
+            if (!find) return exit(error, "UNAUTHORIZED");
             const refresh = await user.generateToken(find, "refresh");
             const access = await user.generateToken(find, "access");
             cookie.refresh_token.set({

@@ -1,4 +1,4 @@
-import error from "@back/utils/error";
+import exit from "@back/utils/error";
 import Bun from "bun";
 import Elysia, { t } from "elysia";
 import { type JWTPayload, SignJWT, jwtVerify } from "jose";
@@ -18,12 +18,8 @@ const UserDB = mongoose.model<IUser>("User", userSchema);
 
 const elysia = new Elysia().model({
   user: t.Object({
-    username: t.String({
-      error: error.INVALID_TYPE_USERNAME,
-    }),
-    password: t.String({
-      error: error.INVALID_TYPE_PASSWORD,
-    }),
+    username: t.String(),
+    password: t.String(),
   }),
 });
 
@@ -38,9 +34,6 @@ const findByUsername = async (username: string) => {
 };
 
 const create = async ({ username, password }: { username: string; password: string }) => {
-  if (await findByUsername(username)) {
-    throw error.USER_ALREADY_EXISTS;
-  }
   const user = new UserDB({
     username: username,
     password: await Bun.password.hash(password),
