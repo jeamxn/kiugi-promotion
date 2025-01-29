@@ -16,6 +16,11 @@ const ERROR_MESSAGE = {
 export type ERROR_KEY = keyof typeof ERROR_MESSAGE;
 export type ERROR_STATUS = (typeof ERROR_MESSAGE)[ERROR_KEY][0];
 export type ERROR_MESSAGES = (typeof ERROR_MESSAGE)[ERROR_KEY][1];
+export type ERROR_RESPONSE = {
+  success: false;
+  code: ERROR_KEY;
+  message: ERROR_MESSAGES;
+};
 
 const tmpElysia = t.Object({
   success: t.Boolean({

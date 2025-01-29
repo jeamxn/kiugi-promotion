@@ -30,12 +30,16 @@ const userService = new Elysia({ name: "user/service" })
               httpOnly: true,
               maxAge: 60 * 60 * 24 * 7,
               path: "/",
+              sameSite: "none",
+              secure: true,
             });
             cookie.access_token.set({
               value: access,
               httpOnly: true,
               maxAge: 60 * 15,
               path: "/",
+              sameSite: "none",
+              secure: true,
             });
           }
         },

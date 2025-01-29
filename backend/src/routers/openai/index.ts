@@ -1,4 +1,5 @@
 import getUserInfo from "@back/guards/getUserInfo";
+import { errorElysia } from "@back/utils/error";
 import Elysia, { t } from "elysia";
 
 const OpenaiRouter = new Elysia({
@@ -19,6 +20,17 @@ OpenaiRouter.post(
     body: t.Object({
       text: t.String(),
     }),
+    response: {
+      200: t.Object({
+        token: t.String(),
+        userInfo: t.Object({
+          username: t.String(),
+        }),
+      }),
+      ...errorElysia([], {
+        isSignIn: true,
+      }),
+    },
   },
 );
 

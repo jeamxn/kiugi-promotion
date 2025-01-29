@@ -51,6 +51,8 @@ AuthRouter.post(
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
       path: "/",
+      sameSite: "none",
+      secure: true,
     });
 
     cookie.access_token.set({
@@ -58,6 +60,8 @@ AuthRouter.post(
       httpOnly: true,
       maxAge: 60 * 15,
       path: "/",
+      sameSite: "none",
+      secure: true,
     });
 
     return {
@@ -71,6 +75,38 @@ AuthRouter.post(
         success: t.Boolean(),
       }),
       ...errorElysia(["USER_NOT_FOUND", "INVALID_PASSWORD"]),
+    },
+  },
+);
+
+AuthRouter.post(
+  "logout",
+  async ({ cookie }) => {
+    cookie.refresh_token.set({
+      value: "refresh",
+      httpOnly: true,
+      maxAge: 0,
+      path: "/",
+      sameSite: "none",
+      secure: true,
+    });
+    cookie.access_token.set({
+      value: "access",
+      httpOnly: true,
+      maxAge: 0,
+      path: "/",
+      sameSite: "none",
+      secure: true,
+    });
+    return {
+      success: true,
+    };
+  },
+  {
+    response: {
+      200: t.Object({
+        success: t.Boolean(),
+      }),
     },
   },
 );
@@ -94,6 +130,8 @@ AuthRouter.post(
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
       path: "/",
+      sameSite: "none",
+      secure: true,
     });
 
     cookie.access_token.set({
@@ -101,6 +139,8 @@ AuthRouter.post(
       httpOnly: true,
       maxAge: 60 * 15,
       path: "/",
+      sameSite: "none",
+      secure: true,
     });
 
     return {
@@ -108,6 +148,30 @@ AuthRouter.post(
     };
   },
   {
+    response: {
+      200: t.Object({
+        success: t.Boolean(),
+      }),
+      ...errorElysia(["NO_REFRESH_TOKEN", "UNAUTHORIZED"]),
+    },
+  },
+);
+
+AuthRouter.post(
+  "check",
+  async ({ body, user, error }) => {
+    const { refresh_token } = body;
+    if (!refresh_token) return exit(error, "NO_REFRESH_TOKEN");
+    const verify = await user.verifyToken(refresh_token);
+    if (!verify) return exit(error, "UNAUTHORIZED");
+    return {
+      success: true,
+    };
+  },
+  {
+    body: t.Object({
+      refresh_token: t.String(),
+    }),
     response: {
       200: t.Object({
         success: t.Boolean(),

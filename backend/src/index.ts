@@ -23,7 +23,7 @@ const app = new Elysia();
 app.use(swagger());
 app.use(
   cors({
-    origin: "*",
+    origin: true,
   }),
 );
 app.use(IndexRouter);
