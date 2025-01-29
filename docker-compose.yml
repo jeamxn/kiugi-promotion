@@ -4,6 +4,7 @@ services:
   kiugi-promotion-db:
     image: mongodb/mongodb-community-server:5.0-ubuntu2004
     container_name: kiugi-promotion-db
+    command: mongod --quiet --logpath /dev/null
     ports:
       - "27017:27017"
     volumes:
