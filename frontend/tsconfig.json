@@ -20,8 +20,8 @@
     ],
     "rootDir": "../",
     "paths": {
-      "@back/*": ["../backend/src/*"],
-      "@front/*": ["../frontend/src/*"],
+      "@backend/*": ["../backend/src/*"],
+      "@frontend/*": ["../frontend/src/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

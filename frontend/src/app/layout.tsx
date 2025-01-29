@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Title } from "@front/components/sidebar";
+import { Title } from "@frontend/components/sidebar";
+import Provider from "@frontend/providers";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -16,10 +17,12 @@ const RootLayout = ({
   return (
     <html lang="ko">
       <body className="antialiased">
-        <div className="h-full w-full">
-          <Title />
-          {children}
-        </div>
+        <Provider>
+          <div className="h-full w-full">
+            <Title />
+            {children}
+          </div>
+        </Provider>
       </body>
     </html>
   );
