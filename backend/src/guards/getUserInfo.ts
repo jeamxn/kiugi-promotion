@@ -10,7 +10,6 @@ const getUserInfo = new Elysia()
   .resolve(async ({ cookie, user, error }) => {
     const access_token = cookie.access_token.value;
     if (!access_token) {
-      // throw error.UNAUTHORIZED;
       return exit(error, "UNAUTHORIZED");
     }
     const verify = await user.verifyToken(access_token);

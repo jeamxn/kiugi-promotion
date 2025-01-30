@@ -16,13 +16,6 @@ const userSchema = new mongoose.Schema({
 });
 const UserDB = mongoose.model<IUser>("User", userSchema);
 
-const elysia = new Elysia().model({
-  user: t.Object({
-    username: t.String(),
-    password: t.String(),
-  }),
-});
-
 const findById = async (id: string) => {
   return await UserDB.findById(id);
 };
@@ -72,13 +65,19 @@ const verifyToken = async (token: string): Promise<TokenPayload | null> => {
   }
 };
 
-const User = {
-  findById,
-  findByUsername,
-  create,
-  elysia,
-  generateToken,
-  verifyToken,
-};
+const User = new Elysia()
+  .model({
+    user: t.Object({
+      username: t.String(),
+      password: t.String(),
+    }),
+  })
+  .decorate("user", {
+    findById,
+    findByUsername,
+    create,
+    generateToken,
+    verifyToken,
+  });
 
 export default User;

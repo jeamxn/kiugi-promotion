@@ -8,7 +8,7 @@ const userService = new Elysia({ name: "user/service" })
     session: {} as Record<number, string>,
   })
   .model({})
-  .decorate("user", User)
+  .use(User)
   .macro({
     isSignIn: (enabled: boolean) => {
       if (!enabled) return;
