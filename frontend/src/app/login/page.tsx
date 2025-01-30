@@ -1,47 +1,20 @@
 "use client";
 
-import { ERROR_RESPONSE } from "@backend/utils/error";
 import { Button, Input } from "@frontend/components";
-import instance from "@frontend/utils/instance";
-import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import useAuth from "@frontend/hooks/useAuth";
+import useError from "@frontend/hooks/useError";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 const Login = () => {
-  const router = useRouter();
-
+  const { error } = useError();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [USER_NOT_FOUND, setUSER_NOT_FOUND] = React.useState(false);
-  const [INVALID_PASSWORD, setINVALID_PASSWORD] = React.useState(false);
 
-  const { mutate: login, isPending } = useMutation({
-    mutationKey: ["login", email, password],
-    mutationFn: async () => {
-      const { data } = await instance.post("/auth/login", { username: email, password });
-      router.prefetch("/");
-      return data;
-    },
-    onMutate: () => {
-      setUSER_NOT_FOUND(false);
-      setINVALID_PASSWORD(false);
-    },
-    onSuccess: () => {
-      router.push("/");
-    },
-    onError: (error: AxiosError<ERROR_RESPONSE>) => {
-      if (!error.response) return;
-      const { code } = error.response.data;
-      switch (code) {
-        case "USER_NOT_FOUND":
-          setUSER_NOT_FOUND(true);
-          break;
-        case "INVALID_PASSWORD":
-          setINVALID_PASSWORD(true);
-          break;
-      }
+  const { login } = useAuth({
+    login: {
+      email,
+      password,
     },
   });
 
@@ -59,8 +32,8 @@ const Login = () => {
             boxClassName="w-full"
             value={email}
             setValue={setEmail}
-            error={USER_NOT_FOUND ? "가입되지 않은 이메일입니다." : undefined}
-            disabled={isPending}
+            error={error.USER_NOT_FOUND ? "가입되지 않은 이메일입니다." : undefined}
+            disabled={login.isPending}
           />
           <Input
             type="password"
@@ -68,15 +41,15 @@ const Login = () => {
             boxClassName="w-full"
             value={password}
             setValue={setPassword}
-            error={INVALID_PASSWORD ? "잘못된 비밀번호입니다." : undefined}
-            disabled={isPending}
+            error={error.INVALID_PASSWORD ? "잘못된 비밀번호입니다." : undefined}
+            disabled={login.isPending}
           />
           <Button
             disabled={!email || !password}
             onClick={() => {
-              login();
+              login.mutate();
             }}
-            loading={isPending}
+            loading={login.isPending}
           />
           <div className="flex flex-row gap-1 items-center justify-end">
             <Link href="">

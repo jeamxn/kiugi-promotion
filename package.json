@@ -12,7 +12,8 @@
   },
   "workspaces": [
     "frontend",
-    "backend"
+    "backend",
+    "common"
   ],
   "scripts": {
     "front": "bun --cwd frontend",

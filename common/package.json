@@ -1,0 +1,13 @@
+{
+  "name": "common",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "common"
+  ]
+}
