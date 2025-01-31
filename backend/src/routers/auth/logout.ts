@@ -1,7 +1,6 @@
-import User from "@back/models/user";
 import Elysia, { t } from "elysia";
 
-const logout = new Elysia().use(User).post(
+const logout = new Elysia().post(
   "logout",
   async ({ cookie }) => {
     cookie.refresh_token.set({

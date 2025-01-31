@@ -19,7 +19,10 @@ const getUserInfo = new Elysia()
     const userSearch = await user.findById(verify.id);
     const { password, ...userInfo } = { ...userSearch?.toObject() };
     return {
-      userInfo: userInfo,
+      userInfo: {
+        ...userInfo,
+        id: userInfo._id?.toString(),
+      },
     };
   })
   .as("plugin");

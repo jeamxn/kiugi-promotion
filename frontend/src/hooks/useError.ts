@@ -1,10 +1,10 @@
 "use client";
 
-import { ERROR_KEY, ERROR_MESSAGE } from "@common/error";
+import { ERROR_KEY, ERROR_MESSAGE, ERROR_MESSAGES } from "@common/error";
 import { atom, useAtom } from "jotai";
 
 type ERROR_STATE = {
-  [key in ERROR_KEY]?: boolean;
+  [key in ERROR_KEY]?: ERROR_MESSAGES;
 };
 
 const defualtError: ERROR_STATE = Object.fromEntries(
@@ -16,9 +16,15 @@ const errorAtom = atom<ERROR_STATE>(defualtError);
 const useError = () => {
   const [error, setErrorMessages] = useAtom(errorAtom);
   const setError = (key: ERROR_KEY, value: boolean) => {
-    setErrorMessages((prev) => {
-      return { ...prev, [key]: value };
-    });
+    if (value) {
+      setErrorMessages((prev) => {
+        return { ...prev, [key]: ERROR_MESSAGE[key][1] };
+      });
+    } else {
+      setErrorMessages((prev) => {
+        return { ...prev, [key]: undefined };
+      });
+    }
   };
   return { error, setError };
 };

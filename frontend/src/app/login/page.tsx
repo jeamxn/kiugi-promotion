@@ -32,7 +32,7 @@ const Login = () => {
             boxClassName="w-full"
             value={email}
             setValue={setEmail}
-            error={error.USER_NOT_FOUND ? "가입되지 않은 이메일입니다." : undefined}
+            error={error.USER_NOT_FOUND}
             disabled={login.isPending}
           />
           <Input
@@ -41,7 +41,7 @@ const Login = () => {
             boxClassName="w-full"
             value={password}
             setValue={setPassword}
-            error={error.INVALID_PASSWORD ? "잘못된 비밀번호입니다." : undefined}
+            error={error.INVALID_PASSWORD}
             disabled={login.isPending}
           />
           <Button

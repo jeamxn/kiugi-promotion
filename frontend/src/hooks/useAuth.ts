@@ -1,6 +1,7 @@
 import { ERROR_RESPONSE } from "@common/error";
+import { Me } from "@common/responses";
 import instance from "@frontend/utils/instance";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -42,7 +43,28 @@ const useAuth = (props?: Auth) => {
     },
   });
 
-  return { login };
+  const logout = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: async () => {
+      const { data } = await instance.post("/auth/logout");
+      return data;
+    },
+    onSuccess: () => {
+      router.push("/login");
+    },
+  });
+
+  const { data: me } = useQuery({
+    queryKey: ["me"],
+    queryFn: async () => {
+      const { data } = await instance.get<Me>("/auth/me");
+      return data;
+    },
+    enabled: enabledQueries,
+    refetchInterval: 1000 * 60,
+  });
+
+  return { login, logout, me };
 };
 
 export default useAuth;
