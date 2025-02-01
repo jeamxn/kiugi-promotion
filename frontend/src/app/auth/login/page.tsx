@@ -20,7 +20,7 @@ const Login = () => {
 
   return (
     <div className="flex flex-col w-full items-center justify-center h-full">
-      <div className="max-w-96 w-full flex flex-col gap-8">
+      <div className="max-w-[500px] w-full flex flex-col gap-8">
         <div className="flex flex-col gap-2">
           <p className="text-3xl font-medium">내 사업체 키우기의 시작</p>
           <p className="text-5xl font-bold">KIUGI</p>
@@ -50,9 +50,11 @@ const Login = () => {
               login.mutate();
             }}
             loading={login.isPending}
-          />
+          >
+            <p className="text-white">로그인하기</p>
+          </Button>
           <div className="flex flex-row gap-1 items-center justify-end">
-            <Link href="">
+            <Link href="/auth/signin" prefetch>
               <p className="text-sm text-gray-400 hover:text-gray-600 transition-colors">회원가입</p>
             </Link>
             <p className="text-sm text-gray-400 hover:text-gray-600 transition-colors">·</p>

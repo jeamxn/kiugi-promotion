@@ -14,11 +14,14 @@ const Title = () => {
   const { logout, me } = useAuth();
 
   return url && url.header ? (
-    <div className="w-full flex flex-row gap-4 items-center justify-center py-3 px-6 fixed backdrop-blur z-50">
-      <p className="font-medium text-2xl">{url.title}</p>
-      <div className="w-full border-b-2 border-gray-300" />
-      {url.header.auth ? <button onClick={() => logout.mutate()}>로그아웃 {me?.username}</button> : null}
-    </div>
+    <>
+      <div className="w-full flex flex-row gap-4 items-center justify-center py-3 px-6 fixed backdrop-blur z-50">
+        <p className="font-medium text-2xl">{url.title}</p>
+        <div className="w-full border-b-2 border-gray-300" />
+        {url.header.auth ? <button onClick={() => logout.mutate()}>로그아웃 {me?.username}</button> : null}
+      </div>
+      {url.header.noPadding ? null : <div className="h-14" />}
+    </>
   ) : null;
 };
 

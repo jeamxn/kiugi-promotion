@@ -3,7 +3,7 @@ import { Me } from "@common/responses";
 import instance from "@frontend/utils/instance";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import useError from "./useError";
 
@@ -15,8 +15,8 @@ interface Auth {
 }
 
 const useAuth = (props?: Auth) => {
-  const enabledQueries = React.useMemo(() => !props?.login, [props]);
   const router = useRouter();
+  const pathname = usePathname();
   const { setError } = useError();
 
   const login = useMutation({
@@ -29,17 +29,8 @@ const useAuth = (props?: Auth) => {
       router.prefetch("/");
       return data;
     },
-    onMutate: () => {
-      setError("USER_NOT_FOUND", false);
-      setError("INVALID_PASSWORD", false);
-    },
     onSuccess: () => {
       router.push("/");
-    },
-    onError: (error: AxiosError<ERROR_RESPONSE>) => {
-      if (!error.response) return;
-      const { code } = error.response.data;
-      setError(code, true);
     },
   });
 
@@ -60,7 +51,7 @@ const useAuth = (props?: Auth) => {
       const { data } = await instance.get<Me>("/auth/me");
       return data;
     },
-    enabled: enabledQueries,
+    enabled: !pathname.includes("/auth"),
     refetchInterval: 1000 * 60,
   });
 

@@ -18,7 +18,7 @@ export const middleware = async (request: Readonly<NextRequest>) => {
     if (userAgent?.includes("KAKAOTALK")) {
       return NextResponse.redirect(`kakaotalk://web/openExternal?url=${encodeURIComponent(request.url)}`);
     }
-    const exclude = ["/login", "/signup"];
+    const exclude = ["/auth"];
     const isAuth = exclude.some((path) => request.url.includes(path));
     const { data } = await serverInstance.post(
       "/auth/check",
@@ -32,10 +32,10 @@ export const middleware = async (request: Readonly<NextRequest>) => {
     if (isAuth && data.success) {
       return NextResponse.redirect(new URL("/", origin));
     } else if (!isAuth && !data.success) {
-      return NextResponse.redirect(new URL("/login", origin));
+      return NextResponse.redirect(new URL("/auth/login", origin));
     }
   } catch {
-    return NextResponse.redirect(new URL("/login", origin));
+    return NextResponse.redirect(new URL("/auth/login", origin));
   }
   return response;
 };

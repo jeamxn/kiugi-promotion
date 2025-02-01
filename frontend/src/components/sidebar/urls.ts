@@ -5,6 +5,7 @@ interface Url {
     | false
     | {
         auth?: boolean;
+        noPadding?: boolean;
       };
 }
 
@@ -18,8 +19,15 @@ const urls: {
       auth: true,
     },
   },
-  "/login": {
+  "/auth/login": {
     title: "로그인",
+    menubar: false,
+    header: {
+      noPadding: true,
+    },
+  },
+  "/auth/signin": {
+    title: "회원가입",
     menubar: false,
     header: {},
   },
