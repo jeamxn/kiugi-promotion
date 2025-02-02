@@ -37,7 +37,7 @@ const Input = ({
       <div
         className={[
           "rounded-lg border overflow-hidden p-3 transition-all duration-300 relative w-full",
-          inputFocus ? "border-blue-600" : error ? "border-red-500" : "border-gray-200 hover:border-gray-400",
+          inputFocus ? "border-teal-400" : error ? "border-red-500" : "border-gray-200 hover:border-gray-400",
           label ? (inputFocus ? "h-16" : "h-12") : "",
           disabled ? "cursor-not-allowed" : "cursor-text",
         ].join(" ")}

@@ -13,7 +13,7 @@ const Button = ({ className, loading, children, error, success, ...props }: Butt
   return (
     <div className={[className, "flex flex-col items-start justify-start gap-2"].join(" ")}>
       <button
-        className={["bg-blue-600 p-3 rounded-lg relative overflow-hidden w-full"].join(" ")}
+        className={["bg-teal-400 p-3 rounded-lg relative overflow-hidden w-full"].join(" ")}
         {...props}
         disabled={disabled}
       >
@@ -28,7 +28,7 @@ const Button = ({ className, loading, children, error, success, ...props }: Butt
         {children}
       </button>
       {error ? <p className="text-red-500 text-sm pl-2 pb-1">{error}</p> : null}
-      {success ? <p className="text-blue-500 text-sm pl-2 pb-1">{success}</p> : null}
+      {success ? <p className="text-teal-400 text-sm pl-2 pb-1">{success}</p> : null}
     </div>
   );
 };

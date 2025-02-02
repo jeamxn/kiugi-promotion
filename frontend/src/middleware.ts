@@ -4,7 +4,7 @@ import { serverInstance } from "./utils/instance";
 export const middleware = async (request: Readonly<NextRequest>) => {
   const origin = request.nextUrl.origin;
   const requestHeaders = new Headers(request.headers);
-  // requestHeaders.set("x-url", request.url);
+  requestHeaders.set("x-url", request.url);
 
   const response = NextResponse.next({
     request: {
@@ -30,6 +30,7 @@ export const middleware = async (request: Readonly<NextRequest>) => {
       },
     );
     if (isAuth && data.success) {
+      console.log(request);
       return NextResponse.redirect(new URL("/", origin));
     } else if (!isAuth && !data.success) {
       return NextResponse.redirect(new URL("/auth/login", origin));

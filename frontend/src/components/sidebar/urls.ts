@@ -9,11 +9,26 @@ interface Url {
       };
 }
 
-const urls: {
-  [key: string]: Url;
-} = {
+export const groups = {
+  홈: ["/", "/playground"],
+  인증: ["/auth/login", "/auth/signin"],
+} as const;
+
+export type GroupsPaths = (typeof groups)[keyof typeof groups][number];
+export type Urls = {
+  [key in GroupsPaths]: Url;
+};
+
+const urls: Urls = {
   "/": {
     title: "Home",
+    menubar: true,
+    header: {
+      auth: true,
+    },
+  },
+  "/playground": {
+    title: "채팅 테스트",
     menubar: true,
     header: {
       auth: true,

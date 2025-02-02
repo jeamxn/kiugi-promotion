@@ -35,7 +35,7 @@ const Signin = () => {
   }, [currentError]);
 
   return (
-    <div className="flex flex-col items-center w-full px-6">
+    <div className="flex flex-col items-center w-full">
       <div className="flex flex-col gap-8 pt-4 w-full max-w-[500px]">
         <div className="flex flex-col gap-4">
           <p className="font-medium px-2">필수 입력 정보</p>

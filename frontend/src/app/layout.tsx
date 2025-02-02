@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Title } from "@frontend/components/sidebar";
+import Sidebar from "@frontend/components/sidebar";
 import Provider from "@frontend/providers";
 import React from "react";
 
@@ -18,10 +18,7 @@ const RootLayout = ({
     <html lang="ko">
       <body className="antialiased">
         <Provider>
-          <div className="h-full w-full">
-            <Title />
-            {children}
-          </div>
+          <Sidebar>{children}</Sidebar>
         </Provider>
       </body>
     </html>
