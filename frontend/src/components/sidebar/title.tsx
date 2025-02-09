@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import Icons from "../icons";
+import Loading from "../loading";
 import urls, { GroupsPaths } from "./urls";
 
 const Title = () => {
@@ -23,7 +24,11 @@ const Title = () => {
           <p className="font-bold text-2xl">키우기</p>
         </Link>
         <div className="w-full border-b-2 border-gray-300" />
-        {url.header.auth ? <button onClick={() => logout.mutate()}>로그아웃</button> : null}
+        {url.header.auth ? (
+          <Loading isLoading={logout.isPending}>
+            <button onClick={() => logout.mutate()}>로그아웃</button>
+          </Loading>
+        ) : null}
       </div>
       {url.header.noPadding ? null : <div className="h-14" />}
     </>

@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "../loading";
+import { Spinner } from "../loading";
 
 interface ButtonProps
   extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
@@ -22,7 +22,7 @@ const Button = ({ className, loading, children, error, success, ...props }: Butt
         ) : null}
         {loading ? (
           <div className="absolute w-full h-full flex flex-row items-center justify-center -translate-x-3 -translate-y-3">
-            <Loading size={24} />
+            <Spinner size={24} />
           </div>
         ) : null}
         {children}

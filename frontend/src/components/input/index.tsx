@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Loading from "../loading";
+import { Spinner } from "../loading";
 
 interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   label?: string;
@@ -54,7 +54,7 @@ const Input = ({
         ) : null}
         {loading ? (
           <div className="absolute w-full h-full flex flex-row items-center justify-center -translate-x-3 -translate-y-3">
-            <Loading size={24} />
+            <Spinner size={24} />
           </div>
         ) : null}
         {label && (inputFocus || !value) ? (

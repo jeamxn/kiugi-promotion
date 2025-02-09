@@ -1,19 +1,26 @@
+import React from "react";
+import Spinner from "./spinner";
+
 const Loading = ({
-  size,
+  isLoading,
+  size = 16,
+  children,
 }: {
+  isLoading?: boolean;
   size?: number;
+  children: Readonly<React.ReactNode>;
 }) => {
-  const s = size ?? 48;
   return (
-    <span
-      className="loader border-white border-b-transparent rounded-full"
-      style={{
-        width: s,
-        height: s,
-        borderWidth: (5 / 48) * s,
-      }}
-    />
+    <div className="relative">
+      {isLoading ? (
+        <div className="absolute flex flex-row items-center justify-center bg-gray-400/70 cursor-not-allowed w-full h-full">
+          <Spinner size={size} />
+        </div>
+      ) : null}
+      {children}
+    </div>
   );
 };
 
 export default Loading;
+export { Spinner };
